@@ -1,6 +1,6 @@
 const endpoints = Object.freeze({
   properties: {
-    ALL_PROPERTIES: (x: string) => `/property/list/?q=${x}`,
+    ALL_PROPERTIES: (x?: string) => `/property/list/`,
     SINGLE_PROPERTY: (x: string) => `/property/${x}`,
   },
   favorites: {

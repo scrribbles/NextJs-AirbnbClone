@@ -28,7 +28,7 @@ import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { loginUser } from "@/store/reducers/userInfo/userReducer";
+import { loginUser } from "@/store/slice/userInfo/userReducer";
 import { useDispatch } from "react-redux";
 /* might be needed for future implementation
 import PhoneInput from "react-phone-input-2";

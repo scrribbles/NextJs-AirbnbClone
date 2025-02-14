@@ -33,6 +33,8 @@ const bookingFilterSlice = createSlice({
     addPets: (state, action) => {
       state.pets = action.payload;
     },
+
+    // category filter
   },
 });
 

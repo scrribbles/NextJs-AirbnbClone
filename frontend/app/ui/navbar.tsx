@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import AirBnbLogo from "./logo";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { DoorClosedIcon, GlobeIcon } from "lucide-react";
+import { GlobeIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 // custom user context
@@ -21,17 +21,22 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { Menu } from "lucide-react";
-import NavSearch from "../../components/bookingFilter/nav-search";
-import Shortnavbar from "./short-navbar";
-import Authentication from "../../features/authentication/authentication";
+const NavSearch = dynamic(
+  () => import("../../components/bookingFilter/nav-search")
+);
+const Authentication = dynamic(
+  () => import("../../features/authentication/authentication")
+);
+const Shortnavbar = dynamic(() => import("./short-navbar"));
 
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { logoutUser } from "@/store/reducers/userInfo/userReducer";
+import { logoutUser } from "@/store/slice/userInfo/userReducer";
 import { RootState } from "@/store/store";
 import { handleLogout } from "@/utilities/utils";
 
 import { useQueryClient } from "@tanstack/react-query";
+import dynamic from "next/dynamic";
 
 const LoggedInLinks = [
   {
@@ -63,9 +68,11 @@ const Navbar = () => {
 
   const { openModal } = useModalContext();
 
-  window.onbeforeunload = () => {
-    window.scrollTo(0, 0);
-  };
+  if (window !== undefined) {
+    window.onbeforeunload = () => {
+      window.scrollTo(0, 0);
+    };
+  }
 
   const paths = ["/", "/rooms"];
   const allowed_paths = paths.includes(pathname);

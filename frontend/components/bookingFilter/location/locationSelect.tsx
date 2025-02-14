@@ -16,8 +16,8 @@ import { MapPinHouseIcon } from "lucide-react";
 import { CustomDropDownLabel } from "../customDropdownTrigger"; // Ensure the name is correct
 import Trigger from "../customDropdownTrigger";
 
-import { useDispatch } from "react-redux";
-import { addDestination } from "@/store/reducers/bookingFilterReducer/bookingFilterReducer";
+// import { useDispatch } from "react-redux";
+// import { addDestination } from "@/store/slice/bookingFilterReducer/bookingFilterReducer";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 
@@ -25,12 +25,12 @@ const LocationSelect = ({ form }: { form: UseFormReturn }) => {
   const [open, setOpen] = useState(false);
   const selector = useSelector((state: RootState) => state.bookingFilter);
   const [location, setLocation] = useState<string>("");
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   function updateLocation(x: string) {
     setLocation(x);
     form.setValue("destination", x);
-    dispatch(addDestination(x));
+    // dispatch(addDestination(x));
   }
 
   return (
