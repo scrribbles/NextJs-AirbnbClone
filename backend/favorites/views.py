@@ -6,7 +6,6 @@ from rest_framework.response import Response
 
 from properties.models import Properties
 from .models import Favorite
-from user.models import User
 from .serializers import FavoriteSerializer
 
 
@@ -41,6 +40,9 @@ class FavoriteAction(DestroyAPIView):
     serializer_class = FavoriteSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_object(self):
+        return get_object_or_404(Favorite, property__id=self.kwargs.get('id'))
+
 
 class GetUserFavoritesView(ListAPIView):
     queryset = Favorite.objects.all()
@@ -49,17 +51,12 @@ class GetUserFavoritesView(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         """ get all a users favorites """
-        user_id = kwargs.get("id", None)
-        if user_id is None:
-            return Response({
-                "data": "Please provide a user id"
-            }, status=status.HTTP_400_BAD_REQUEST)
-        user_instance = Favorite.objects.filter(user__id=user_id).exists()
+        user_instance = Favorite.objects.filter(user=request.user).exists()
         if user_instance is None:
             return Response({
                 "data": "User does not have any properties in favorites"
             }, status=status.HTTP_404_NOT_FOUND)
-        favorites = Favorite.objects.filter(user__id=user_id)
+        favorites = Favorite.objects.filter(user=request.user)
         serializer = self.get_serializer(favorites, many=True)
         return Response({
             'data': serializer.data

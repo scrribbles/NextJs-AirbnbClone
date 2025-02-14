@@ -2,8 +2,8 @@
 
 import React from "react";
 import { SlidersHorizontalIcon } from "lucide-react";
-import { useModalContext } from "../utilities/context";
-import FilterProperty from "../customComponents/filter/filter";
+import { useModalContext } from "../../context/context";
+import FilterProperty from "../../components/filter/filter";
 
 const Filters = () => {
   const { openModal } = useModalContext();

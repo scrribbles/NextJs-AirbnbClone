@@ -59,7 +59,8 @@ SECRET_KEY = 'django-insecure-6kp53x3l*dg=&4jwfg=3b&n%jb%#8-ui4y#t=(!p9c@4*+9li)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS  = config('ALLOWED_HOSTS', default='*' if DEBUG else '', cast=lambda v: [s.strip() for s in v.split(',')])
+# ALLOWED_HOSTS  = config('ALLOWED_HOSTS', default='*' if DEBUG else '', cast=lambda v: [s.strip() for s in v.split(',')])
+ALLOWED_HOSTS = ["localhost"]
 
 #
 REST_FRAMEWORK = {
@@ -130,11 +131,11 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'middleware.CustomLocaleMiddleware.CustomLocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'middleware.CustomLocaleMiddleware.CustomLocaleMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -270,3 +271,9 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
+
+
+
+#Media Setttings
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

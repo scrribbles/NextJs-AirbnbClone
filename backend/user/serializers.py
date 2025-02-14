@@ -3,7 +3,7 @@ from rest_framework import serializers
 from reviews.models import Review
 from .models import User, BankingDetails
 from reviews.serializers import ReviewSerializer
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, AuthUser
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, AuthUser, TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import Token
 
 from airbnb import cipher

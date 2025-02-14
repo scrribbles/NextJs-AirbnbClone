@@ -3,8 +3,7 @@
 import CategoriesFilter from "./ui/categories-fIlter";
 import Filters from "./ui/filters";
 import TaxFiltering from "./ui/tax-filtering";
-import PropertyList from "./ui/properties/property-list";
-import Properties from "./ui/properties/properties";
+import HomePage from "./(pages)/home/listings";
 
 export default function Home() {
   return (
@@ -14,37 +13,7 @@ export default function Home() {
         <Filters />
         <TaxFiltering />
       </div>
-
-      <PropertyList>
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-        <Properties />
-      </PropertyList>
+      <HomePage />
     </main>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import Authentication from "@/app/ui/authentication/authentication";
+import Authentication from "@/features/authentication/authentication";
 
 const page = () => {
   return (

@@ -2,7 +2,13 @@
 *.pyc
 virtualenv/**/
 ./backend/venv/**
-/backend/db.sqlite3
+./backend/db.sqlite3
 venv/
+./db.sqlite3
+# Ignore only migration caches or temporary files
+*/migrations/**/__pycache__/
+*/migrations/*.pyc
+migrations/**/ - no  
+*.sqlite3
 
 __pycache__/

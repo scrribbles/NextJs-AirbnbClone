@@ -110,7 +110,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=30, null=False, blank=True)
     gender = models.CharField(choices=gender, max_length=1, blank=True)
     phone_number = PhoneNumberField()
-    _image = models.ImageField(upload_to='images/', null=True, blank=True)
+    _image = models.ImageField(upload_to='images/user/', null=True, blank=True)
     is_deleted = models.BooleanField(default=False)
     # task_id = models.CharField(max_length=255, blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)

@@ -1,43 +1,59 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView, \
-	RetrieveUpdateDestroyAPIView, get_object_or_404
+	RetrieveUpdateDestroyAPIView, get_object_or_404, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Properties
-from .serializers import PropertiesListSerializer, PropertyDetailSerializer
+from .serializers import PropertiesListSerializer, PropertyDetailSerializer, CreatePropertySerializer
 
 from services.cache_wrapper import CacheWrapper
 
+
 cache = CacheWrapper()
+
+
+class CreatePropertyView(CreateAPIView):
+    """ class to create a property """
+    queryset = Properties.objects.all()
+    serializer_class = CreatePropertySerializer
+    permission_classes = [IsAuthenticated]
+
+    # def create(self, request, *args, **kwargs):
+    #     return super().create(request, *args, **kwargs)
+
 
 class GetAllProperties(ListAPIView):
 	""" class to get the list of properties - homepage"""
 	queryset = Properties.objects.all()
+
 	serializer_class = PropertiesListSerializer
 
 	def list(self, request, *args, **kwargs) -> Response:
 		""" list/get request to get all properties """
-		params = request.query_params.get('q', None)
+		params = request.query_params.get('category', "")
+		print(request.query_params)
 		page = request.query_params.get('page', 1)
-		key = f"{params}_{page}"
-		if params is None:
-			return Response({'data': 'Please provide a param to search '
-									 'for'}, status=status.HTTP_400_BAD_REQUEST)
+		key = f"{params}_{page}_{request.user}"
+		data = ""
+		# if params is None:
+		# 	return Response({'data': 'Please provide a param to search '
+		# 							 'for'}, status=status.HTTP_400_BAD_REQUEST)
 		cache_hit = cache.get(key)
 		if cache_hit:
-			return Response({'data': cache_hit}, status=status.HTTP_200_OK)
-		data = self.get_queryset().filter(categories__iexact=params.lower()).order_by('created_at').all()
+			return Response(cache_hit, status=status.HTTP_200_OK)
+		if params:
+			data =  self.get_queryset().filter(categories__iexact=params.lower()).order_by('created_at').all()
+		else:
+			data = self.get_queryset().order_by('created_at').all()
 		if data:
 			serializer = self.get_serializer(data, many=True)
 			cache.set(f"{params}_{page}", serializer.data)
-			return Response({
-				'data': serializer.data
-			}, status=status.HTTP_200_OK)
+			return Response(
+				serializer.data
+			, status=status.HTTP_200_OK)
 		else:
-			return Response({
-				'data': 'No instance',
-			}, status=status.HTTP_400_BAD_REQUEST)
+			return Response([], status=status.HTTP_200_OK)
 
 
 class ViewListingsInStateView(ListAPIView):
@@ -144,3 +160,7 @@ class PropertyActionView(RetrieveUpdateDestroyAPIView):
 		property_instance.delete()
 		return Response({'data': 'Property deleted successfully'},
 						status=status.HTTP_204_NO_CONTENT)
+
+
+
+

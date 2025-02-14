@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AirBnbLogo from "./logo";
 import Link from "next/link";
-import { motion, useInView, useScroll } from "framer-motion";
-import { GlobeIcon, Scale } from "lucide-react";
+import { motion } from "framer-motion";
+import { GlobeIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 // custom user context
-import { useModalContext } from "@/app/utilities/context";
+import { useModalContext } from "@/context/context";
 
 import {
   DropdownMenu,
@@ -21,19 +21,58 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { Menu } from "lucide-react";
-import NavSearch from "../customComponents/bookingFilter/nav-search";
-import Shortnavbar from "./short-navbar";
-import Authentication from "./authentication/authentication";
+const NavSearch = dynamic(
+  () => import("../../components/bookingFilter/nav-search")
+);
+const Authentication = dynamic(
+  () => import("../../features/authentication/authentication")
+);
+const Shortnavbar = dynamic(() => import("./short-navbar"));
+
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "@/store/slice/userInfo/userReducer";
+import { RootState } from "@/store/store";
+import { handleLogout } from "@/utilities/utils";
+
+import { useQueryClient } from "@tanstack/react-query";
+import dynamic from "next/dynamic";
+
+const LoggedInLinks = [
+  {
+    link: "/guest/inbox",
+    name: "Messages",
+  },
+  {
+    link: "/notifications",
+    name: "Notifications",
+  },
+  {
+    link: "trips/v1",
+    name: "Trips",
+  },
+  {
+    link: "wishlists",
+    name: "Wishlists",
+  },
+];
 
 const Navbar = () => {
+  const selector = useSelector((state: RootState) => state.userAuth);
+  const dispatch = useDispatch();
+
+  const queryClient = useQueryClient();
+
   const [filters, setFilters] = useState<string>("stays");
   const pathname = usePathname();
 
   const { openModal } = useModalContext();
 
-  window.onbeforeunload = () => {
-    window.scrollTo(0, 0);
-  };
+  if (window !== undefined) {
+    window.onbeforeunload = () => {
+      window.scrollTo(0, 0);
+    };
+  }
 
   const paths = ["/", "/rooms"];
   const allowed_paths = paths.includes(pathname);
@@ -51,6 +90,14 @@ const Navbar = () => {
     if (pathname.includes("/login") || pathname.includes("/signup")) return;
     e.preventDefault();
     openModal(<Authentication />, "Login or Sign up");
+  }
+
+  async function logout() {
+    const value = await handleLogout();
+    if (value) {
+      dispatch(logoutUser());
+      queryClient.invalidateQueries({ queryKey: ["listings"] });
+    }
   }
 
   return (
@@ -131,26 +178,40 @@ const Navbar = () => {
                         O
                       </AvatarFallback>
                     </Avatar>
-                    <DropdownMenuContent className="z-[9999999]  p-0  absolute left-[-13.5rem]  rounded-lg ">
+                    <DropdownMenuContent className="z-[9999999]  p-2  absolute left-[-13.5rem]  rounded-lg ">
                       <DropdownMenuGroup>
-                        <ul className="flex flex-col space-y-3">
-                          <Link
-                            href="/login"
-                            className="hover:bg-gray-300/10 duration-100 transition-all hover:font-bold  p-2 font-normal text-sm cursor-pointer"
-                            onClick={(e) => handleModal(e)}
-                          >
-                            Login
-                          </Link>
-                          <Link
-                            href="/signup"
-                            className="hover:bg-gray-300/10 duration-100 transition-all hover:font-bold w-full p-2 font-normal text-sm cursor-pointer"
-                            onClick={(e) => {
-                              handleModal(e);
-                            }}
-                          >
-                            Sign Up
-                          </Link>
-                        </ul>
+                        {!selector.loggedIn ? (
+                          <ul className="flex flex-col space-y-3">
+                            <Link
+                              href="/login"
+                              className="hover:bg-gray-300/10 duration-100 transition-all hover:font-bold  p-2 font-normal text-sm cursor-pointer"
+                              onClick={(e) => handleModal(e)}
+                            >
+                              Login
+                            </Link>
+                            <Link
+                              href="/signup"
+                              className="hover:bg-gray-300/10 duration-100 transition-all hover:font-bold w-full p-2 font-normal text-sm cursor-pointer"
+                              onClick={(e) => {
+                                handleModal(e);
+                              }}
+                            >
+                              Sign Up
+                            </Link>
+                          </ul>
+                        ) : (
+                          <ul className="flex flex-col space-y-1">
+                            {LoggedInLinks.map((link, index: number) => (
+                              <Link
+                                href={link.link}
+                                key={index}
+                                className="hover:bg-gray-300/10 duration-100 transition-all font-bold  p-2 text-sm cursor-pointer"
+                              >
+                                {link.name}
+                              </Link>
+                            ))}
+                          </ul>
+                        )}
                       </DropdownMenuGroup>
                       <DropdownMenuSeparator />
                       <DropdownMenuGroup className="flex flex-col space-y-3">
@@ -178,6 +239,14 @@ const Navbar = () => {
                         >
                           Help
                         </Link>
+                        {selector.loggedIn && (
+                          <div
+                            onClick={logout}
+                            className="text-red mt-2 duration-100 transition-all w-full p-2 font-normal hover:font-bold  text-sm cursor-pointer"
+                          >
+                            Logout
+                          </div>
+                        )}
                       </DropdownMenuGroup>
                     </DropdownMenuContent>
                   </DropdownMenuLabel>

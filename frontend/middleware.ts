@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtDecode } from "jwt-decode";
-import { handleTokenRefresh } from "./app/utilities/handleTokenRefresh";
+import { handleTokenRefresh } from "./utilities/handleTokenRefresh";
+import { ENV } from "@/config/env";
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
@@ -19,8 +20,8 @@ export async function middleware(request: NextRequest) {
   const isPublicPath = publicPath.includes(path);
   const isProtectedPath = protectedPaths.includes(path);
 
-  const accessToken = request.cookies.get("accessToken")?.value;
-  const refreshToken = request.cookies.get("refreshToken")?.value;
+  const accessToken = request.cookies.get(ENV.ACCESS_TOKEN)?.value;
+  const refreshToken = request.cookies.get(ENV.REFRESH_TOKEN)?.value;
 
   // 🌟 1. If user has NO access token but has refresh token → Refresh it
   if (!accessToken && refreshToken) {
@@ -30,7 +31,10 @@ export async function middleware(request: NextRequest) {
         return NextResponse.next();
       }
     } catch {
-      return NextResponse.redirect(new URL("/login", request.url));
+      console.log("failed");
+      request.cookies.delete(ENV.ACCESS_TOKEN);
+      request.cookies.delete(ENV.REFRESH_TOKEN);
+      // return NextResponse.redirect(new URL("", request.url));
     }
   }
 
@@ -42,6 +46,7 @@ export async function middleware(request: NextRequest) {
       const currentTime = Math.floor(Date.now() / 1000);
 
       if (decodedToken.exp && decodedToken.exp < currentTime - 1000) {
+        console.log("fetching access token, since it's almost expired");
         if (refreshToken) {
           const response = await handleTokenRefresh(refreshToken);
           if (response.status === 200) {

@@ -10,6 +10,6 @@ urlpatterns = [
                                                             "property "
                                                        "from "
                                                     "favorite"),
-    path("all-properties/<uuid:id>", GetUserFavoritesView.as_view(),
+    path("all/", GetUserFavoritesView.as_view(),
          name="Get all a users favorite")
 ]

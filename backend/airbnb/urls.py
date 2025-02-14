@@ -19,6 +19,8 @@ from django.urls import path, include
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from django.conf import settings
+from django.conf.urls.static import static
 
 from django.conf.urls.i18n import i18n_patterns
 
@@ -83,3 +85,7 @@ urlpatterns += i18n_patterns(
          name="USER PREFERENCES API"),
     path("", GetAllProperties.as_view(), name="get all properties")
 )
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT )

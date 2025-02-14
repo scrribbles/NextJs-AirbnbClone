@@ -1,6 +1,11 @@
-"use client";
+import type { Metadata } from "next";
 
-import Authentication from "@/app/ui/authentication/authentication";
+import Authentication from "@/features/authentication/authentication";
+
+export const metadata: Metadata = {
+  title: "Login",
+  description: "Login to Airbnb",
+};
 
 const page = () => {
   return (

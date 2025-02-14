@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from user.serializers import UserSerializer, RegisterUserSerializer, GetBankDetailsSerializer, GetAllBankDetailsSerializer
 from .models import User, BankingDetails
-# from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenRefreshView
 # from user_preferences.models import UserPreferences
 
 class GetUserInfoView(RetrieveUpdateAPIView):
@@ -68,3 +68,10 @@ class GetBankingDetailsView(RetrieveUpdateDestroyAPIView):
         bank_details = self.get_object()
         serializer = self.get_serializer(bank_details)
         return Response({'data': serializer.data}, status=status.HTTP_200_OK)
+
+
+class RefreshTokenView(TokenRefreshView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        response.data['user'] = UserSerializer(User.objects.get(email=request.user)).data
+        return response
