@@ -59,7 +59,8 @@ SECRET_KEY = 'django-insecure-6kp53x3l*dg=&4jwfg=3b&n%jb%#8-ui4y#t=(!p9c@4*+9li)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS  = config('ALLOWED_HOSTS', default='*' if DEBUG else '', cast=lambda v: [s.strip() for s in v.split(',')])
+# ALLOWED_HOSTS  = config('ALLOWED_HOSTS', default='*' if DEBUG else '', cast=lambda v: [s.strip() for s in v.split(',')])
+ALLOWED_HOSTS = ["localhost"]
 
 #
 REST_FRAMEWORK = {
@@ -129,8 +130,8 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'middleware.CustomLocaleMiddleware.CustomLocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'middleware.CustomLocaleMiddleware.CustomLocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
