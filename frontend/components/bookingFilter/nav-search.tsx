@@ -22,14 +22,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import CheckIn from "./checkin/checkin";
 import CheckOut from "./chckout/checkout";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { Button } from "@/components/ui/button";
 import { searchSchema } from "@/types/property_filtering";
 
+import {
+  addCheckIn,
+  addCheckOut,
+  addDestination,
+} from "@/store/slice/bookingFilterReducer/bookingFilterReducer";
+
 const NavSearch = ({ type }: { type: string }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const select = useSelector((state: RootState) => state.bookingFilter);
+  const dispatch = useDispatch();
   // console.log("Selector data: ", select);
 
   const form = useForm<z.infer<typeof searchSchema>>({
@@ -46,6 +53,13 @@ const NavSearch = ({ type }: { type: string }) => {
 
   const submitForm = (e: z.infer<typeof searchSchema>) => {
     console.log(e);
+    dispatch(addDestination(e.destination));
+    if ("checkIn" in e && e.checkIn) {
+      dispatch(addCheckIn(e.checkIn));
+    }
+    if ("checkOut" in e && e.checkOut) {
+      dispatch(addCheckOut(e.checkOut));
+    }
   };
 
   // const [option, setOption] = useState("Dates");
@@ -361,7 +375,7 @@ const NavSearch = ({ type }: { type: string }) => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <Button className="bg-red p-3 rounded-full absolute right-5 cursor-pointer">
+            <Button className="bg-red hover:bg-red/80 w-fit h-fit p-3 rounded-full absolute right-5 cursor-pointer">
               <SearchIcon stroke="white" />
             </Button>
           </div>

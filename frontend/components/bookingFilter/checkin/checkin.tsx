@@ -18,7 +18,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   addCheckIn,
   addCheckOut,
-} from "@/store/reducers/bookingFilterReducer/bookingFilterReducer";
+} from "@/store/slice/bookingFilterReducer/bookingFilterReducer";
 
 const CheckIn = ({ form }: { form: UseFormReturn }) => {
   const [open, setOpen] = useState(false);
@@ -35,7 +35,7 @@ const CheckIn = ({ form }: { form: UseFormReturn }) => {
 
   function updateCheckIn(x: DateRange) {
     if (!x) {
-      dispatch(addCheckIn(""));
+      // dispatch(addCheckIn(""));
       setDate(undefined);
       return;
     }
@@ -52,8 +52,8 @@ const CheckIn = ({ form }: { form: UseFormReturn }) => {
       shouldTouch: true,
     });
 
-    dispatch(addCheckIn(dateFrom));
-    dispatch(addCheckOut(dateTo));
+    // dispatch(addCheckIn(dateFrom));
+    // dispatch(addCheckOut(dateTo));
 
     setDate(x);
   }

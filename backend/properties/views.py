@@ -31,7 +31,8 @@ class GetAllProperties(ListAPIView):
 
 	def list(self, request, *args, **kwargs) -> Response:
 		""" list/get request to get all properties """
-		params = request.query_params.get('q', "")
+		params = request.query_params.get('category', "")
+		print(request.query_params)
 		page = request.query_params.get('page', 1)
 		key = f"{params}_{page}_{request.user}"
 		data = ""
@@ -52,9 +53,7 @@ class GetAllProperties(ListAPIView):
 				serializer.data
 			, status=status.HTTP_200_OK)
 		else:
-			return Response({
-				'data': 'No instance',
-			}, status=status.HTTP_400_BAD_REQUEST)
+			return Response([], status=status.HTTP_200_OK)
 
 
 class ViewListingsInStateView(ListAPIView):

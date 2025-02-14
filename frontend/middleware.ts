@@ -31,7 +31,10 @@ export async function middleware(request: NextRequest) {
         return NextResponse.next();
       }
     } catch {
-      return NextResponse.redirect(new URL("/login", request.url));
+      console.log("failed");
+      request.cookies.delete(ENV.ACCESS_TOKEN);
+      request.cookies.delete(ENV.REFRESH_TOKEN);
+      // return NextResponse.redirect(new URL("", request.url));
     }
   }
 

@@ -19,11 +19,11 @@ class CustomLocaleMiddleware:
 
     async def __call__(self, request):
         response = await self.get_response(request)
-        print(response)
+        print("====> ", response)
         # Use synchronous method for admin and other synchronous contexts
         if request.user.is_authenticated:
             try:
-                user_prefs = UserPreferences.objects.filter(user=request.user).first()
+                user_prefs = sync_to_async(UserPreferences.objects.filter(user=request.user).first())
 
                 if user_prefs and user_prefs.language:
                     activate(user_prefs.language)

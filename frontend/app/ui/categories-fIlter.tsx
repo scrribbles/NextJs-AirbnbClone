@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -10,6 +10,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { addCategory } from "@/store/slice/category";
+import { useDispatch } from "react-redux";
 
 const categories = [
   {
@@ -71,7 +73,14 @@ const categories = [
 ];
 
 const CategoriesFilter = () => {
+  const dispatch = useDispatch();
+
   const [selected, setSelected] = useState<string>("");
+
+  const handleCatgorySelect = (e: string) => {
+    setSelected(e);
+    dispatch(addCategory(e));
+  };
   return (
     <div className="w-full ">
       <Carousel>
@@ -82,7 +91,9 @@ const CategoriesFilter = () => {
               key={index}
               className="flex flex-col items-center justify-center w-6 h-full sm:basis-20 gap-x-2 cursor-pointer group p-2 lg:basis-20 2xl:basis-26 3xl:basis-28 select-none"
               onClick={() =>
-                selected === text ? setSelected("") : setSelected(text)
+                selected === text
+                  ? handleCatgorySelect("")
+                  : handleCatgorySelect(text)
               }
             >
               <img

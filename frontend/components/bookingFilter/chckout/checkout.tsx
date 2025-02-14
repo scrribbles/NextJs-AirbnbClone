@@ -17,10 +17,7 @@ import { UseFormReturn } from "react-hook-form";
 import { DropdownMenuPortal } from "@radix-ui/react-dropdown-menu";
 
 import { DayPicker, DateRange } from "react-day-picker";
-import {
-  addCheckIn,
-  addCheckOut,
-} from "@/store/reducers/bookingFilterReducer/bookingFilterReducer";
+
 import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -28,16 +25,15 @@ const CheckOut = ({ form }: { form: UseFormReturn }) => {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<DateRange | undefined>(undefined);
 
-  const dispatch = useDispatch();
   const checkSelector = useSelector((state: RootState) => state.bookingFilter);
 
   function updateCheckOut(x: DateRange) {
     if (!x) {
-      dispatch(addCheckOut(""));
+      // dispatch(addCheckOut(""));
       setDate(undefined);
       return;
     }
-    dispatch(addCheckOut(x.to?.toLocaleDateString()));
+    // dispatch(addCheckOut(x.to?.toLocaleDateString()));
     form.setValue(
       "checkIn",
       checkSelector.checkOut || x?.to?.toLocaleDateString()
