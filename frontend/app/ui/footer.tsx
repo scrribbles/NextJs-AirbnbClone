@@ -1,6 +1,8 @@
 "use client";
 import { ChevronDown, DollarSign, Globe, GlobeIcon, Instagram } from "lucide-react";
 import { useEffect, useState } from "react";
+import Language from './language/language';
+import { useModalContext } from "@/app/utilities/context";
 
 const newState = [
   "Popular",
@@ -2118,6 +2120,8 @@ const Footer = () => {
   const [newList, setNewList] = useState(footerDetails[step]);
   const [showMore, setShowMore] = useState(false);
 
+  const { openModal } = useModalContext();
+
   useEffect(() => {
     if (showMore) {
       setNewList(footerDetails[step]);
@@ -2236,7 +2240,7 @@ const Footer = () => {
           </ul>
         </div>
         <div className="flex gap-2 items-center">
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5" onClick={()=>openModal(<Language/>)}>
           <GlobeIcon size={16}/>
           <span className="hover:underline cursor-pointer text-black tetxt-sm font-semibold">
           English (US)

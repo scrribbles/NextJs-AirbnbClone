@@ -37,7 +37,7 @@ const Modals = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="md:w-1/5 lg:w-[35%] bg-white rounded-2xl border shadow-lg"
+            className="md:w-1/5  lg:min-w-[40%] bg-white rounded-2xl border shadow-lg"
           >
             <div className="flex items-center justify-between border-b border-black/10 p-5">
               <p className="text-base font-bold text-center flex-1">{title}</p>

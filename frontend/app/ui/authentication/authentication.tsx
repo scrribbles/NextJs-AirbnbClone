@@ -39,7 +39,7 @@ const Authentication = () => {
   }
 
   return (
-    <div className="overflow-scroll p-5 space-y-5">
+    <div className="overflow-none p-5 space-y-5">
       {/* <p className="font-bold text-lg">Welcome to AirBnb</p> */}
       <Form {...form}>
         <form className="space-y-3" onSubmit={form.handleSubmit(handleSubmit)}>

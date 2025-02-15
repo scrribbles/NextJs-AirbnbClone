@@ -3,6 +3,8 @@
 import React, { useState, lazy } from "react";
 import { filterSchema } from "@/lib/definitions";
 import { useForm } from "react-hook-form";
+import RangeSlider from "react-range-slider-input";
+import "react-range-slider-input/dist/style.css";
 import {
   Form,
   FormField,
@@ -91,9 +93,17 @@ const FilterProperty = () => {
   const [beds, setBeds] = useState(1);
   const [rooms, setRooms] = useState(1);
   const [guests, setGuests] = useState(1);
+
+  const [minValue,setMinValue] = useState(10)
+  const [maxValue,setMaxValue] = useState(960)
   const form = useForm<z.infer<typeof filterSchema>>({
     resolver: zodResolver(filterSchema),
   });
+
+  const handleChange = (value) =>{
+    setMinValue(value[0])
+    setMaxValue(value[1])
+  }
 
   function resetForm() {
     form.reset();
@@ -139,38 +149,50 @@ const FilterProperty = () => {
   }
 
   return (
-    <div className="max-h-[55vh] overflow-y-auto px-5 relative">
+    <div className="max-h-[60vh] overflow-y-auto px-5 relative">
       <Form {...form}>
         <form
-          className="space-y-10 h-full"
+          className="space-y-4  h-full"
           onSubmit={form.handleSubmit(submitData)}
         >
-          <div className="flex gap-x-10">
-            <FormField
-              name="price.min"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem className="flex items-center">
-                  <FormLabel htmlFor="price.min">Min Price</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="price.max"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="price.min">Max Price</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
+          <section className="grid items-center gap-y-3  ">
+            <div>
+              <h3 className="font-bold">Price Range</h3>
+              <p className="text-sm pb-2">Nightly prices before fees and taxes</p>
+            </div>
+            <RangeSlider value={[minValue,maxValue]} min={10} max={880} step={1} onInput={(e)=>handleChange(e)} />
+            <div className="flex gap-x-12 items-center justify-between pt-2">
+              <FormField
+                name="price.min"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem className="flex flex-col  items-center w-20 ">
+                    <FormLabel htmlFor="price.min" className="text-[10px] ">
+                      Minimum
+                    </FormLabel>
+                    <FormControl>
+                      <Input {...field} className="rounded-full text-center" value={`$${minValue}`} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="price.max"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem className="flex flex-col items-center rounded-full w-20">
+                    <FormLabel htmlFor="price.max" className="text-[10px]">
+                      Maximum
+                    </FormLabel>
+                    <FormControl>
+                      <Input {...field} className="rounded-full text-center" value={`$${maxValue}`} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+          </section>
+
           <hr />
           <div className="space-y-5">
             <p className="font-semibold text-lg">Rooms, Beds and Guests</p>

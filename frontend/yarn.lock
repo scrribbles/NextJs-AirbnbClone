@@ -2545,6 +2545,11 @@ client-only@0.0.1:
   resolved "https://registry.npmjs.org/client-only/-/client-only-0.0.1.tgz"
   integrity sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==
 
+clsx@^1.1.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.2.1.tgz#0ddc4a20a549b59c93a4116bb26f5294ca17dc12"
+  integrity sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==
+
 clsx@^2.1.1:
   version "2.1.1"
   resolved "https://registry.npmjs.org/clsx/-/clsx-2.1.1.tgz"
@@ -2611,6 +2616,11 @@ core-js-compat@^3.38.0, core-js-compat@^3.38.1:
   integrity sha512-0XEDpr5y5mijvw8Lbc6E5AkjrHfp7eEoPlu36SWeAbcL8fn1G1ANe8DBlo2XoNN89oVpxWwOjYIPVzR4ZvsKCQ==
   dependencies:
     browserslist "^4.24.3"
+
+core-js@^3.22.4:
+  version "3.40.0"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.40.0.tgz#2773f6b06877d8eda102fc42f828176437062476"
+  integrity sha512-7vsMc/Lty6AGnn7uFpYT56QesI5D2Y/UkgKounk87OP9Z2H9Z8kj6jzcSGAxFmUtDOS0ntK6lbQz+Nsa0Jj6mQ==
 
 cosmiconfig@^8.1.3:
   version "8.3.6"
@@ -4529,6 +4539,14 @@ react-phone-input-2@^2.15.1:
     lodash.reduce "^4.6.0"
     lodash.startswith "^4.2.1"
     prop-types "^15.7.2"
+
+react-range-slider-input@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/react-range-slider-input/-/react-range-slider-input-3.2.1.tgz#6ab4c654b8892bca862b8f7968280594f8d646f0"
+  integrity sha512-MApTX4a/Uzm9ZrJFoWu2kM87TKHJpnHHBV2JR9N9WmOSWk832DDBT3suNN6vCQmFRRtfJO9stw+bsiGpto0Hig==
+  dependencies:
+    clsx "^1.1.1"
+    core-js "^3.22.4"
 
 react-redux@^9.2.0:
   version "9.2.0"
